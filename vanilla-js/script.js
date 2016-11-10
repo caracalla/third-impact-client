@@ -1,6 +1,8 @@
 (function (window, document, undefined) {
-  var button = document.getElementById("getPostsButton");
+  var base_url = "http://localhost:3000/"
   var output = document.getElementById("output");
+  var brandLink = document.getElementById("brand-link");
+  var homeLink = document.getElementById("home-link");
 
   var processPosts = function (posts) {
     var output = [];
@@ -18,50 +20,71 @@
     for (var i = 0; i < userLinks.length; i++) {
       userLinks[i].addEventListener("click", function (userLink) {
         return function (event) {
-          getUser(userLink.dataset.userid)
+          getUser(userLink.dataset.userid);
         };
       }(userLinks[i]));
     }
   };
 
-  var getPosts = function (event) {
+  var getRequest = function (url, element, func) {
+    element.innerHTML =
+      '<div class="sk-circle">'
+    +   '<div class="sk-circle1 sk-child"></div>'
+    +   '<div class="sk-circle2 sk-child"></div>'
+    +   '<div class="sk-circle3 sk-child"></div>'
+    +   '<div class="sk-circle4 sk-child"></div>'
+    +   '<div class="sk-circle5 sk-child"></div>'
+    +   '<div class="sk-circle6 sk-child"></div>'
+    +   '<div class="sk-circle7 sk-child"></div>'
+    +   '<div class="sk-circle8 sk-child"></div>'
+    +   '<div class="sk-circle9 sk-child"></div>'
+    +   '<div class="sk-circle10 sk-child"></div>'
+    +   '<div class="sk-circle11 sk-child"></div>'
+    +   '<div class="sk-circle12 sk-child"></div>'
+    + '</div>'
+
     var xhr = new XMLHttpRequest();
-    xhr.open("get", "http://localhost:3000/posts")
+    xhr.open("get", url);
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        output.innerHTML = processPosts(JSON.parse(xhr.responseText));
-        makeUserLinkHandlers();
+        func(element, JSON.parse(xhr.responseText));
       } else {
-        output.innerHTML = "Error: " + xhr.status.toString();
+        element.innerHTML = "Error: " + xhr.status.toString();
       }
-    }
+    };
 
     xhr.send(null);
+  }
+
+  var getPosts = function () {
+    var posts_url = base_url + "posts";
+
+    getRequest(posts_url, output, function (element, posts) {
+      element.innerHTML = processPosts(posts);
+      makeUserLinkHandlers();
+    });
   };
 
   var getUser = function (userid) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("get", "http://localhost:3000/users/" + userid)
+    var user_url = base_url + "users/" + userid;
 
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        output.innerHTML = window.templates.user(JSON.parse(xhr.responseText));
-      } else {
-        output.innerHTML = "Error: " + xhr.status.toString();
-      }
-    }
-
-    xhr.send(null);
+    getRequest(user_url, output, function (element, user) {
+      element.innerHTML = window.templates.user(user);
+      getUserPosts(userid);
+    });
   };
 
-  button.addEventListener("click", getPosts);
+  var getUserPosts = function (userid) {
+    var user_posts_url = base_url + "users/" + userid + "/posts";
+    var element = document.getElementById("user-posts")
+
+    getRequest(user_posts_url, element, function (element, posts) {
+      element.innerHTML = processPosts(posts);
+    });
+  };
+
+  window.addEventListener("load", getPosts);
+  brandLink.addEventListener("click", getPosts);
+  homeLink.addEventListener("click", getPosts);
 })(window, window.document);
-
-
-// "id":1,
-// "content":"this is my first post",
-// "title":"first!",
-// "user_id":1,
-// "created_at":"2016-10-23T17:52:44.224Z",
-// "updated_at":"2016-10-23T17:52:44.224Z"

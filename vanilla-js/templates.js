@@ -14,17 +14,18 @@
 
     var output =
       '<div class="row">'
-    +   '<div class="col-md-12">'
-    +     '<p class="small">'
+    +   '<div class="col-md-12 card card-block">'
+    +     '<h4 class="card-title">'
+    +       post.title
+    +     '</h4>'
+    +     '<p class="card-text small">'
+    +       "Author: "
     +       '<a href="#" class="user-link" data-userid="' + post.author_id + '">'
     +          post.author_username
     +       '</a>'
-    +       ' - ' + post.created_at
+    +       ' - Posted at: ' + post.created_at
     +     '</p>'
-    +     '<h3>'
-    +       post.title
-    +     '</h3>'
-    +     '<p class="small">'
+    +     '<p class="card-text">'
     +       post.content
     +     '</p>'
     +   '</div>'
@@ -43,7 +44,7 @@
 
     var output =
       '<div class="row">'
-    +   '<div class="col-md-4">'
+    +   '<div class="col-sm-4">'
     +     '<p class="lead">'
     +        user.username
     +     '</p>'
@@ -51,13 +52,32 @@
     +        user.email
     +     '</p>'
     +   '</div>'
-    +   '<div class="col-md-8">'
-    +     '<p>'
-    +       'something like a user bio could go here I guess'
+    +   '<div class="col-sm-8">'
+    +     '<p id="user-posts">'
     +     '</p>'
     +   '</div>'
     + '</div>';
 
     return output;
   };
+
+  window.templates.spinner = function () {
+    var spinnerHTML =
+      '<div class="sk-circle">'
+    +   '<div class="sk-circle1 sk-child"></div>'
+    +   '<div class="sk-circle2 sk-child"></div>'
+    +   '<div class="sk-circle3 sk-child"></div>'
+    +   '<div class="sk-circle4 sk-child"></div>'
+    +   '<div class="sk-circle5 sk-child"></div>'
+    +   '<div class="sk-circle6 sk-child"></div>'
+    +   '<div class="sk-circle7 sk-child"></div>'
+    +   '<div class="sk-circle8 sk-child"></div>'
+    +   '<div class="sk-circle9 sk-child"></div>'
+    +   '<div class="sk-circle10 sk-child"></div>'
+    +   '<div class="sk-circle11 sk-child"></div>'
+    +   '<div class="sk-circle12 sk-child"></div>'
+    + '</div>';
+
+    return spinnerHTML;
+  }
 }(window, window.document));

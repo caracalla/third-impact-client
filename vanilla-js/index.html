@@ -8,14 +8,29 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 
     <title>Third Impact</title>
   </head>
   <body>
+      <nav class="navbar navbar-light bg-faded">
+        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"></button>
+        <div class="collapse navbar-toggleable-xs" id="navbar-header">
+          <a class="navbar-brand" id="brand-link" href="#">Navbar</a>
+          <ul class="nav navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" id="home-link" href="#">Home</a>
+            </li>
+            <li class="nav-item float-xs-right">
+              <a class="nav-link" id="sign-in-link" href="#">Sign In</a>
+            </li>
+          </ul>
+        </div>
+      </nav> <!-- /navbar -->
+
     <div class="container">
-      <button id="getPostsButton" class="btn btn-primary">Get Posts</button>
-      <hr>
-      <div id="output">0</button>
+<hr>
+      <div id="output"></div>
     </div>
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
