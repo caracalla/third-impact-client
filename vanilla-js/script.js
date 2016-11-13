@@ -1,11 +1,7 @@
 (function (window, document, undefined) {
   var baseURL = "http://localhost:3000/"
   var mainElement = document.getElementById("main-element");
-  var brandLink = document.getElementById("brand-link");
-  var homeLink = document.getElementById("home-link");
-  var usersLink = document.getElementById("users-link");
-  var logInLink = document.getElementById("log-in-link");
-  var signUpLink = document.getElementById("sign-up-link");
+  var navbar = document.getElementById("navbar");
 
   var makeUserLinkHandlers = function () {
     var userLinks = document.getElementsByClassName("user-link");
@@ -37,7 +33,9 @@
 
         if (isLoggedIn()) {
           showLoggedInState();
-        }
+        } else {
+          showLoggedOutState();
+        };
       } else if (xhr.readyState === 4 && xhr.status === 401) {
         localStorage.removeItem("auth-email");
         localStorage.removeItem("auth-token");
@@ -82,6 +80,32 @@
     });
   };
 
+  var postPost = function (event) {
+    event.preventDefault();
+
+    var title = document.getElementById("title-field").value;
+    var content = document.getElementById("content-field").value;
+    var xhr = new XMLHttpRequest();
+    var url = baseURL + "posts";
+    var body = { post: { title: title, content: content, user_id: localStorage["user-id]"]} };
+    xhr.open("post", url)
+
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
+    xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // why does a 500 go here?
+        getPosts();
+      } else if (xhr.readyState === 4 && xhr.responseText) {xhr.readyState === 4 &&
+        renderErrors(xhr.responseText);
+      }
+    };
+
+    xhr.send(JSON.stringify(body));
+  };
+
   // Users
 
   var getUsers = function () {
@@ -120,7 +144,7 @@
         // why does a 500 go here?
         logIn(JSON.parse(xhr.responseText));
         getPosts();
-      } else if (xhr.responseText) {
+      } else if (xhr.readyState === 4 && xhr.responseText) {
         renderErrors(xhr.responseText);
       }
     };
@@ -128,10 +152,21 @@
     xhr.send(JSON.stringify(body));
   };
 
-  var renderErrors = function (errorText) {
-    errors = JSON.parse(errorText).errors;
+  var renderErrors = function (errorsText) {
+    var errors = JSON.parse(errorsText).errors;
+    var errorsElement = document.getElementById("errors");
 
-    for (error in errors) { console.log(error) }
+    Object.keys(errors).map(function (key) {
+      var errorText = key + " " + errors[key];
+      var errorElement = document.createElement("div")
+
+      errorElement.innerHTML = templates.error(errorText);
+      errorsElement.appendChild(errorElement)
+
+      setTimeout(function () {
+        errorsElement.removeChild(errorElement);
+      }, 2000);
+    });
   };
 
   // Authentication
@@ -173,20 +208,39 @@
   };
 
   var showLoggedInState = function () {
-    logInLink.innerHTML = localStorage["username"];
-    logInLink.onclick = function (event){
-      getUser(localStorage["user-id"]);
-    };
+    navbar.innerHTML = templates.loggedInNavbar(localStorage["username"]);
 
-    signUpLink.innerHTML = "Log Out";
-    signUpLink.onclick = postLogOut;
+    var brandLink = document.getElementById("brand-link");
+    var homeLink = document.getElementById("home-link");
+    var usersLink = document.getElementById("users-link");
+    var usernameLink = document.getElementById("username-link");
+    var logOutLink = document.getElementById("log-out-link");
+
+    brandLink.onclick = getPosts;
+    homeLink.onclick = getPosts;
+    usersLink.onclick = getUsers;
+
+    usernameLink.onclick = function (event) {
+      getUser(localStorage["user-id"])
+    }
+
+    logOutLink.onclick = function (event){
+      postLogOut();
+    };
   };
 
   var showLoggedOutState = function () {
-    logInLink.innerHTML = "Log In";
-    logInLink.onclick = showLogIn;
+    navbar.innerHTML = templates.loggedOutNavbar();
 
-    signUpLink.innerHTML = "Sign Up";
+    var brandLink = document.getElementById("brand-link");
+    var homeLink = document.getElementById("home-link");
+    var usersLink = document.getElementById("users-link");
+    var logInLink = document.getElementById("log-in-link");
+    var signUpLink = document.getElementById("sign-up-link");
+
+    brandLink.onclick = getPosts;
+    homeLink.onclick = getPosts;
+    logInLink.onclick = showLogIn;
     signUpLink.onclick = showSignUp;
   };
 
@@ -208,7 +262,7 @@
       if (xhr.readyState === 4 && xhr.status === 200) {
         logIn(JSON.parse(xhr.responseText));
         getPosts();
-      } else if (xhr.responseText) {
+      } else if (xhr.readyState === 4 && xhr.responseText) {
         renderErrors(xhr.responseText);
       }
     };
@@ -230,7 +284,7 @@
 
         showLoggedOutState();
         getPosts();
-      } else if (xhr.responseText) {
+      } else if (xhr.readyState === 4 && xhr.responseText) {
         renderErrors(xhr.responseText);
       }
     };
@@ -239,9 +293,4 @@
   };
 
   window.addEventListener("load", getPosts);
-  brandLink.onclick = getPosts;
-  homeLink.onclick = getPosts;
-  usersLink.onclick = getUsers;
-  logInLink.onclick = showLogIn;
-  signUpLink.onclick = showSignUp;
 })(window, window.document);

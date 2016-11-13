@@ -14,7 +14,7 @@
 
     var postHTML =
       '<div class="row">'
-    +   '<div class="col-md-12 card card-block">'
+    +   '<div class="col-lg-8 offset-lg-2 card card-block">'
     +     '<h4 class="card-title">'
     +       post.title
     +     '</h4>'
@@ -132,22 +132,83 @@
   window.templates.postForm = function () {
     var postFormHTML =
       '<div class="row">'
-    +   '<div class="col-md-12 card card-block">'
-    +   '<h4 class="card-title">New Post</h4>'
-    +   '<form>'
-    +     '<div class="form-group">'
-    +       '<input type="text" class="form-control" id="title-field" placeholder="Title">'
-    +     '</div>'
-    +     '<div class="form-group">'
-    +       '<textarea class="form-control" id="content-field" rows="3" placeholder="Content"></textarea>'
-    +     '</div>'
-    +     '<button type="submit" class="btn btn-primary" id="submit-post-button">Submit</button>'
-    +   '</form>'
-    +   '</div>'
+    +   '<div class="col-lg-8 offset-lg-2 card card-block">'
+    +    '<h4 class="card-title">New Post</h4>'
+    +    '<form>'
+    +      '<div class="form-group">'
+    +        '<input type="text" class="form-control" id="title-field" placeholder="Title">'
+    +      '</div>'
+    +      '<div class="form-group">'
+    +        '<textarea class="form-control" id="content-field" rows="3" placeholder="Content"></textarea>'
+    +      '</div>'
+    +      '<button type="submit" class="btn btn-primary" id="submit-post-button">Submit</button>'
+    +    '</form>'
     +   '</div>'
     + '</div>';
 
     return postFormHTML;
+  };
+
+  window.templates.loggedOutNavbar = function () {
+    var navbarHTML =
+      '<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"></button>'
+    + '<div class="collapse navbar-toggleable-xs" id="navbar-header">'
+    +   '<a class="navbar-brand" id="brand-link" href="#">Third Impact</a>'
+    +   '<ul class="nav navbar-nav">'
+    +     '<li class="nav-item active">'
+    +       '<a class="nav-link" id="home-link" href="#">Home</a>'
+    +     '</li>'
+    +     '<li class="nav-item float-sm-right">'
+    +       '<a class="nav-link" id="sign-up-link" href="#">Sign Up</a>'
+    +     '</li>'
+    +     '<li class="nav-item float-sm-right hidden-xs-down">'
+    +       '<span class="navbar-text">|</span>'
+    +     '</li>'
+    +     '<li class="nav-item float-sm-right">'
+    +       '<a class="nav-link" id="log-in-link" href="#">Log In</a>'
+    +     '</li>'
+    +   '</ul>'
+    + '</div>';
+
+    return navbarHTML;
+  };
+
+  window.templates.loggedInNavbar = function (username) {
+    var navbarHTML =
+      '<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"></button>'
+    + '<div class="collapse navbar-toggleable-xs" id="navbar-header">'
+    +   '<a class="navbar-brand" id="brand-link" href="#">Third Impact</a>'
+    +   '<ul class="nav navbar-nav">'
+    +     '<li class="nav-item active">'
+    +       '<a class="nav-link" id="home-link" href="#">Home</a>'
+    +     '</li>'
+    +     '<li class="nav-item active">'
+    +       '<a class="nav-link" id="users-link" href="#">Users</a>'
+    +     '</li>'
+    +     '<li class="nav-item float-sm-right">'
+    +       '<a class="nav-link" id="log-out-link" href="#">Log Out</a>'
+    +     '</li>'
+    +     '<li class="nav-item float-sm-right hidden-xs-down">'
+    +       '<span class="navbar-text">|</span>'
+    +     '</li>'
+    +     '<li class="nav-item float-sm-right">'
+    +       '<a class="nav-link" id="username-link" href="#">'
+    +          username
+    +       '</a>'
+    +     '</li>'
+    +   '</ul>'
+    + '</div>';
+
+    return navbarHTML;
+  };
+
+  window.templates.error = function (errorText) {
+    var errorHTML =
+      '<div class="alert alert-danger" role="alert">'
+    +    errorText
+    + '</div>';
+
+    return errorHTML;
   };
 
   window.templates.spinner = function () {
@@ -169,5 +230,5 @@
     + '</div>';
 
     return spinnerHTML;
-  }
+  };
 }(window, window.document));
