@@ -1,19 +1,6 @@
 (function (window, document, undefined) {
   var baseURL = "http://localhost:3000/"
   var mainElement = document.getElementById("main-element");
-  var navbar = document.getElementById("navbar");
-
-  var makeUserLinkHandlers = function () {
-    var userLinks = document.getElementsByClassName("user-link");
-
-    for (var i = 0; i < userLinks.length; i++) {
-      userLinks[i].onclick = function (userLink) {
-        return function (event) {
-          getUser(userLink.dataset.userid);
-        };
-      }(userLinks[i]);
-    }
-  };
 
   var getRequest = function (url, element, func) {
     element.innerHTML = templates.spinner();
@@ -50,7 +37,51 @@
     };
 
     xhr.send(null);
-  }
+  };
+
+  var postRequest = function (url, body, headers, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("post", url)
+
+    Object.keys(headers).map(function (field) {
+      xhr.setRequestHeader(field, headers[field]);
+    });
+
+    xhr.onreadystatechange = function () {
+      callback(xhr);
+    }
+
+    xhr.send(JSON.stringify(body));
+  };
+
+  var renderErrors = function (errorsText) {
+    var errors = JSON.parse(errorsText).errors;
+    var errorsElement = document.getElementById("errors");
+
+    Object.keys(errors).map(function (key) {
+      var errorText = key + " " + errors[key];
+      var errorElement = document.createElement("div")
+
+      errorElement.innerHTML = templates.error(errorText);
+      errorsElement.appendChild(errorElement)
+
+      setTimeout(function () {
+        errorsElement.removeChild(errorElement);
+      }, 2000);
+    });
+  };
+
+  var makeUserLinkHandlers = function () {
+    var userLinks = document.getElementsByClassName("user-link");
+
+    for (var i = 0; i < userLinks.length; i++) {
+      userLinks[i].onclick = function (userLink) {
+        return function (event) {
+          getUser(userLink.dataset.userid);
+        };
+      }(userLinks[i]);
+    }
+  };
 
   // Posts
 
@@ -85,25 +116,22 @@
 
     var title = document.getElementById("title-field").value;
     var content = document.getElementById("content-field").value;
-    var xhr = new XMLHttpRequest();
     var url = baseURL + "posts";
     var body = { post: { title: title, content: content, user_id: localStorage["user-id]"]} };
-    xhr.open("post", url)
+    var headers = {
+      "Content-type": "application/json",
+      "X-Auth-Email": localStorage["auth-email"],
+      "X-Auth-Token": localStorage["auth-token"]
+    };
 
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
-    xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
-
-    xhr.onreadystatechange = function () {
+    postRequest(url, body, headers, function (xhr) {
       if (xhr.readyState === 4 && xhr.status === 200) {
         // why does a 500 go here?
         getPosts();
       } else if (xhr.readyState === 4 && xhr.responseText) {xhr.readyState === 4 &&
         renderErrors(xhr.responseText);
       }
-    };
-
-    xhr.send(JSON.stringify(body));
+    });
   };
 
   // Users
@@ -132,14 +160,11 @@
     var email = document.getElementById("email-field").value;
     var username = document.getElementById("username-field").value;
     var password = document.getElementById("password-field").value;
-    var xhr = new XMLHttpRequest();
     var url = baseURL + "users";
     var body = { user: { email: email, username: username, password: password } };
-    xhr.open("post", url)
+    var headers = { "Content-type": "application/json" };
 
-    xhr.setRequestHeader("Content-type", "application/json");
-
-    xhr.onreadystatechange = function () {
+    postRequest(url, body, headers, function (xhr) {
       if (xhr.readyState === 4 && xhr.status === 200) {
         // why does a 500 go here?
         logIn(JSON.parse(xhr.responseText));
@@ -147,25 +172,6 @@
       } else if (xhr.readyState === 4 && xhr.responseText) {
         renderErrors(xhr.responseText);
       }
-    };
-
-    xhr.send(JSON.stringify(body));
-  };
-
-  var renderErrors = function (errorsText) {
-    var errors = JSON.parse(errorsText).errors;
-    var errorsElement = document.getElementById("errors");
-
-    Object.keys(errors).map(function (key) {
-      var errorText = key + " " + errors[key];
-      var errorElement = document.createElement("div")
-
-      errorElement.innerHTML = templates.error(errorText);
-      errorsElement.appendChild(errorElement)
-
-      setTimeout(function () {
-        errorsElement.removeChild(errorElement);
-      }, 2000);
     });
   };
 
@@ -208,6 +214,7 @@
   };
 
   var showLoggedInState = function () {
+    var navbar = document.getElementById("navbar");
     navbar.innerHTML = templates.loggedInNavbar(localStorage["username"]);
 
     var brandLink = document.getElementById("brand-link");
@@ -222,14 +229,15 @@
 
     usernameLink.onclick = function (event) {
       getUser(localStorage["user-id"])
-    }
+    };
 
     logOutLink.onclick = function (event){
-      postLogOut();
+      deleteLogOut();
     };
   };
 
   var showLoggedOutState = function () {
+    var navbar = document.getElementById("navbar");
     navbar.innerHTML = templates.loggedOutNavbar();
 
     var brandLink = document.getElementById("brand-link");
@@ -249,14 +257,11 @@
 
     var username = document.getElementById("username-field").value;
     var password = document.getElementById("password-field").value;
-    var xhr = new XMLHttpRequest();
     var url = baseURL + "session";
     var body = { user: { username: username, password: password } };
-    xhr.open("post", url)
+    var headers = { "Content-type": "application/json" };
 
-    xhr.setRequestHeader("Content-type", "application/json");
-
-    xhr.onreadystatechange = function () {
+    postRequest(url, body, headers, function (xhr) {
       var errors = document.getElementById("log-in-errors");
 
       if (xhr.readyState === 4 && xhr.status === 200) {
@@ -265,14 +270,13 @@
       } else if (xhr.readyState === 4 && xhr.responseText) {
         renderErrors(xhr.responseText);
       }
-    };
-
-    xhr.send(JSON.stringify(body));
+    });
   };
 
-  var postLogOut = function () {
-    var xhr = new XMLHttpRequest();
+  var deleteLogOut = function () {
     var url = baseURL + "session";
+    var xhr = new XMLHttpRequest();
+
     xhr.open("delete", url)
 
     xhr.onreadystatechange = function () {
