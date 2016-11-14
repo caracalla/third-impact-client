@@ -15,7 +15,7 @@
 
     if (localStorage["user-id"] === post.author_id.toString() || localStorage["admin"] === "true") {
       var deleteButton =
-        '<button type="button" class="close delete-button" data-postid="' + post.id + '">'
+        '<button type="button" class="close post-delete-button" data-postid="' + post.id + '">'
       +   '<span>&times;</span>'
       + '</button>';
     } else {

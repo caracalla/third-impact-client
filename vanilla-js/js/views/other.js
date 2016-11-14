@@ -10,6 +10,15 @@
     return errorHTML;
   };
 
+  views.flash = function (message) {
+    var flashHTML =
+      '<div class="alert alert-success" role="alert">'
+    +    message
+    + '</div>';
+
+    return flashHTML;
+  };
+
   views.spinner = function () {
     // from http://tobiasahlin.com/spinkit/
     var spinnerHTML =

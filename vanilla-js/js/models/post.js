@@ -5,18 +5,20 @@
   models.post.index = function () {
     var postsURL = baseURL + "posts";
 
-    utilities.getRequest(postsURL, mainElement, function (element, posts) {
+    utilities.getRequest(postsURL, mainElement, function (posts, element) {
       if (utilities.isLoggedIn()) {
         element.innerHTML = views.post.indexLoggedIn(posts);
         var submitPostButton = document.getElementById("submit-post-button");
         submitPostButton.onclick = models.post.create;
+
+        models.post.makePostDeleteButtonHandlers();
       } else {
         element.innerHTML = views.post.indexLoggedOut(posts);
         var signUpBanner = document.getElementById("sign-up-banner");
-        signUpBanner.onclick = stuff.showSignUp;
+        signUpBanner.onclick = models.session.showSignUp;
       }
 
-      utilities.makeUserLinkHandlers();
+      models.user.makeUserLinkHandlers();
     });
   };
 
@@ -33,32 +35,43 @@
       "X-Auth-Token": localStorage["auth-token"]
     };
 
-    utilities.postRequest(url, body, headers, function (xhr) {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // why does a 500 go here?
-        // add post to top of posts, don't just get posts
-        post = JSON.parse(xhr.responseText)
-
-        models.post.index();
-      } else if (xhr.readyState === 4 && xhr.responseText) {
-        utilities.renderErrors(xhr.responseText);
-      }
+    utilities.postRequest(url, body, headers, function (post) {
+      models.post.index();
     });
   };
 
   models.post.show = function (postid) {
     var postURL = baseURL + "posts/" + postid;
 
-    utilities.getRequest(postURL, mainElement, function (element, post) {
+    utilities.getRequest(postURL, mainElement, function (post, element) {
       // if (utilities.isLoggedIn()) {
         element.innerHTML = views.post.show(post);
       // } else {
       //   element.innerHTML = templates.loggedOutPostWithComments(post);
       //   var signUpBanner = document.getElementById("sign-up-banner");
-      //   signUpBanner.onclick = stuff.showSignUp;
+      //   signUpBanner.onclick = models.session.showSignUp;
       // }
 
-      utilities.makeUserLinkHandlers();
+      models.user.makeUserLinkHandlers();
+    });
+  };
+
+  models.post.destroy = function (postid) {
+    var destroyPostURL = baseURL + "posts/" + postid;
+
+    utilities.deleteRequest(destroyPostURL, function () {
+      utilities.flash("Post deleted");
+      models.post.index();
+    });
+  };
+
+  models.post.makePostDeleteButtonHandlers = function () {
+    var postDeleteButtons = utilities.makeArray(document.getElementsByClassName("post-delete-button"));
+
+    postDeleteButtons.forEach(function (postDeleteButton) {
+      postDeleteButton.onclick = function () {
+        models.post.destroy(postDeleteButton.dataset.postid);
+      };
     });
   };
 })(window, window.document);

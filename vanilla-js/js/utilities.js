@@ -8,13 +8,28 @@
     xhr.withCredentials = true;
     xhr.open("get", url);
 
+    // Always authenticate requests for logged in users, even if not necessary.  This way,
+    // we can log out users with invalid credentials as quickly as possible.
     if (utilities.isLoggedIn()) {
       xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
       xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
     }
 
     xhr.onreadystatechange = function () {
-      utilities.responseHandler(xhr, element, successCallback);
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          document.getElementById("errors").innerHTML = "";
+          successCallback(JSON.parse(xhr.responseText), element);
+
+          if (utilities.isLoggedIn()) {
+            models.session.showLoggedInState();
+          } else {
+            models.session.showLoggedOutState();
+          }
+        } else {
+          utilities.handleFailedRequest(xhr);
+        }
+      }
     };
 
     xhr.send(null);
@@ -29,36 +44,57 @@
     });
 
     xhr.onreadystatechange = function () {
-      successCallback(xhr);
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          document.getElementById("errors").innerHTML = "";
+          successCallback(JSON.parse(xhr.responseText));
+
+          if (utilities.isLoggedIn()) {
+            models.session.showLoggedInState();
+          } else {
+            models.session.showLoggedOutState();
+          }
+        } else {
+          utilities.handleFailedRequest(xhr);
+        }
+      }
     }
 
     xhr.send(JSON.stringify(body));
   };
 
-  utilities.responseHandler = function (xhr, element, successCallback) {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        document.getElementById("errors").innerHTML = "";
-        successCallback(element, JSON.parse(xhr.responseText));
+  utilities.deleteRequest = function (url, successCallback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("delete", url)
 
-        if (utilities.isLoggedIn()) {
-          stuff.showLoggedInState();
+    xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
+    xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 204) {
+          successCallback();
         } else {
-          stuff.showLoggedOutState();
-        };
-      } else if (xhr.status === 401) {
-        localStorage.removeItem("auth-email");
-        localStorage.removeItem("auth-token");
-        localStorage.removeItem("username");
-        localStorage.removeItem("user-id");
-
-        stuff.showLoggedOutState();
-        models.post.index();
-      } else if (xhr.status == 500) {
-        utilities.renderErrors('{"errors": {"500": "Internal Server Error"}}')
-      } else if (xhr.responseText) {
-        utilities.renderErrors(xhr.responseText)
+          utilities.handleFailedRequest(xhr);
+        }
       }
+    };
+
+    xhr.send(null);
+  };
+
+  utilities.handleFailedRequest = function (xhr) {
+    if (xhr.status === 401) {
+      models.session.logOut();
+
+      models.session.showLoggedOutState();
+      models.session.showLogIn();
+      utilities.renderErrors(xhr.responseText)
+    } else if (xhr.status == 500) {
+      utilities.renderErrors('{"errors": {"500": "Internal Server Error"}}')
+    } else if (xhr.responseText && xhr.responseText !== " ") {
+      console.log("the response text is: [" + xhr.responseText + "]");
+      utilities.renderErrors(xhr.responseText)
     }
   };
 
@@ -83,16 +119,21 @@
     });
   };
 
-  utilities.makeUserLinkHandlers = function () {
-    // convert HTMLCollection object to Array
-    var userLinks = Array.prototype.slice.call(document.getElementsByClassName("user-link"));
+  utilities.flash = function (message) {
+    var flashElement = document.getElementById("flash");
+    var newElement = document.createElement("div");
 
-    userLinks.forEach(function (userLink) {
-      userLink.onclick = function () {
-        models.user.show(userLink.dataset.userid);
-      };
-    });
-  };
+    newElement.innerHTML = views.flash(message);
+    flashElement.appendChild(newElement);
+
+    setTimeout(function () {
+      try {
+        flashElement.removeChild(newElement);
+      } catch (error) {
+        // do nothing
+      }
+    }, 5000);
+  }
 
   utilities.isLoggedIn = function () {
     if (localStorage["auth-email"] &&
@@ -103,5 +144,10 @@
     } else {
       return false;
     }
+  };
+
+  utilities.makeArray = function (HTMLCollectionObject) {
+    // convert HTMLCollection object to Array
+    return Array.prototype.slice.call(HTMLCollectionObject);
   };
 })(window, window.document);

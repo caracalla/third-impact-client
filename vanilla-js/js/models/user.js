@@ -5,9 +5,9 @@
   models.user.index = function () {
     var usersURL = baseURL + "users";
 
-    utilities.getRequest(usersURL, mainElement, function(element, users) {
+    utilities.getRequest(usersURL, mainElement, function(users, element) {
       element.innerHTML = views.user.index(users)
-      utilities.makeUserLinkHandlers();
+      models.user.makeUserLinkHandlers();
     });
   };
 
@@ -35,7 +35,7 @@
   models.user.show = function (userid) {
     var userURL = baseURL + "users/" + userid;
 
-    utilities.getRequest(userURL, mainElement, function (element, user) {
+    utilities.getRequest(userURL, mainElement, function (user, element) {
       element.innerHTML = views.user.show(user);
       models.user.posts(userid);
     });
@@ -45,9 +45,19 @@
     var userPostsURL = baseURL + "users/" + userid + "/posts";
     var element = document.getElementById("user-posts")
 
-    utilities.getRequest(userPostsURL, element, function (element, posts) {
+    utilities.getRequest(userPostsURL, element, function (posts, element) {
       element.innerHTML = posts.map(views.post.show).join("\n");
-      utilities.makeUserLinkHandlers();
+      models.user.makeUserLinkHandlers();
+    });
+  };
+
+  models.user.makeUserLinkHandlers = function () {
+    var userLinks = utilities.makeArray(document.getElementsByClassName("user-link"));
+
+    userLinks.forEach(function (userLink) {
+      userLink.onclick = function () {
+        models.user.show(userLink.dataset.userid);
+      };
     });
   };
 })(window, window.document);
