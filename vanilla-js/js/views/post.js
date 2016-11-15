@@ -70,10 +70,12 @@
   views.post.indexLoggedOut = function (posts) {
     var signUpBannerHTML =
       '<div class="row">'
-    +   '<div class="col-lg-6 offset-lg-3 btn btn-success btn-lg btn-block" id="sign-up-banner">'
-    +     'Sign up to start posting!'
+    +   '<div class="col-lg-8 offset-lg-2">'
+    +     '<div class="btn btn-success btn-lg btn-block" id="sign-up-banner">'
+    +       'Sign up to start posting!'
+    +     '</div>'
+    +     '<hr>'
     +   '</div>'
-    +   '<hr>'
     + '</div>';
 
     return signUpBannerHTML + posts.map(views.post.show).join("\n");
