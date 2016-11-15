@@ -21,14 +21,10 @@
     var body = { user: { email: email, username: username, password: password } };
     var headers = { "Content-type": "application/json" };
 
-    utilities.postRequest(url, body, headers, function (xhr) {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // why does a 500 go here?
-        models.session.logIn(JSON.parse(xhr.responseText));
-        models.post.index();
-      } else if (xhr.readyState === 4 && xhr.responseText) {
-        utilities.renderErrors(xhr.responseText);
-      }
+    utilities.postRequest(url, body, headers, function (user) {
+      // why does a 500 go here?
+      models.session.logIn(user);
+      models.post.index();
     });
   };
 
