@@ -23,7 +23,7 @@
     }
 
     var postHTML =
-      '<div class="row">'
+      '<div class="row post">'
     +   '<div class="col-lg-8 offset-lg-2 card card-block">'
     +     '<h4 class="card-title">'
     +       '<a href="#" class="post-link" data-postid="' + post.id + '">'
