@@ -7,6 +7,6 @@ Should be visible at http://caracal.ca
 ### Clients:
 
 * Ruby - A collection of basic classes to use in the Ruby interpreter, mainly for testing the API
-* Vanilla JS - A single page app with templates, uses no jQuery or frameworks
-* jQuery - Planned
+* Vanilla JS - A single page app with custom templating, uses no jQuery or frameworks
+* jQuery - Uses Mustache for templating
 * React - Planned
