@@ -12,16 +12,18 @@
     },
 
     showPosts: function () {
-      var url = ThirdImpact.settings.baseURL + "posts";
-      $.getJSON(url, ThirdImpact.renderPosts);
+      var postsURL = ThirdImpact.settings.baseURL + "posts";
+      $.getJSON(postsURL, ThirdImpact.renderPosts);
     },
 
     renderPosts: function (posts) {
       var postsHTML = $.map(posts, function (post) {
         return Mustache.render(Templates.post, post);
-      });
+      }).join("");
 
-      ThirdImpact.settings.mainElement.append(postsHTML);
+      $(postsHTML).hide()
+        .appendTo(ThirdImpact.settings.mainElement)
+        .slideDown();
     },
 
     showNavbar: function () {
