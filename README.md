@@ -8,5 +8,7 @@ Should be visible at http://caracal.ca
 
 * Ruby - A collection of basic classes to use in the Ruby interpreter, mainly for testing the API
 * Vanilla JS - A single page app with custom templating, uses no jQuery or frameworks
-* jQuery - Uses Mustache for templating
+* v2j - The vanilla JS implementation with some functionality ported to jQuery
+* jQuery - An entirely new implementation with jQuery, which uses Mustache for templating
+* Backbone
 * React - Planned
