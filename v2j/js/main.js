@@ -1,4 +1,6 @@
 (function (window, document, $, undefined) {
+  'use strict';
+
   $(document).ready(window.models.post.index);
 
   window.baseURL = "http://localhost:3000/";

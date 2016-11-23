@@ -1,4 +1,6 @@
 (function (window, document, undefined) {
+  'use strict';
+
   window.ThirdImpact = {
     settings: {
       baseURL: "http://local-impact.com:3000/",

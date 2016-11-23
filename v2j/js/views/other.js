@@ -1,4 +1,6 @@
 (function (window, document, undefined) {
+  'use strict';
+
   window.views = window.views || {}
 
   views.error = function (errorText) {

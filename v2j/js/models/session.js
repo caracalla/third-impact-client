@@ -1,4 +1,6 @@
 (function (window, document, undefined) {
+  'use strict';
+
   window.models = window.models || {};
   window.models.session = window.models.session || {};
 

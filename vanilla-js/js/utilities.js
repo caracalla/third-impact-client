@@ -1,4 +1,6 @@
 (function (window, document, undefined) {
+  'use strict';
+
   window.utilities = window.utilities || {};
 
   utilities.getRequest = function (url, element, successCallback) {

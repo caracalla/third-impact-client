@@ -1,4 +1,6 @@
 (function (window, document, undefined) {
+  'use strict';
+
   window.Templates = {
     spinner:
       '<div class="sk-circle">'

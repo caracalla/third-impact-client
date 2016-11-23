@@ -1,4 +1,6 @@
 (function (window, document, undefined) {
+  'use strict';
+
   window.baseURL = "http://localhost:3000/";
   window.mainElement = document.getElementById("main");
 
