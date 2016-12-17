@@ -2,7 +2,7 @@ require "httparty"
 
 class User
   def initialize(username, password)
-    @base_url = "http://localhost:3000/"
+    @base_url = "http://api.caracal.la/"
     @username = username
     @password = password
 
