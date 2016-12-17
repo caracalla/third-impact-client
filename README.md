@@ -6,9 +6,13 @@ Should be visible at http://caracal.ca
 
 ### Clients:
 
-* Ruby - A collection of basic classes to use in the Ruby interpreter, mainly for testing the API
-* Vanilla JS - A single page app with custom templating, uses no jQuery or frameworks
-* v2j - The vanilla JS implementation with some functionality ported to jQuery
-* jQuery - An entirely new implementation with jQuery, which uses Mustache for templating
-* Backbone
+* Vanilla - A single page app with custom templating, uses no jQuery or frameworks
+* jQuery - A reimplementation of Vanilla with jQuery, using Mustache for templating
+* Backbone - Planned
 * React - Planned
+
+The [API][api-repo] is running on [Heroku][heroku-api], and some day at [api.caracal.la][final-api]
+
+[api-repo]: https://github.com/caracalla/third-impact-api
+[heroku-api]: https://infinite-mesa-56815.herokuapp.com/
+[final-api]: https://api.caracal.la/
