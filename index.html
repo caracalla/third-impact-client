@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+
+    <title>Third Impact</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="display-4 text-xs-center">Pick your poison:</h1>
+        </div>
+      </div>
+
+      <hr>
+      <br>
+
+      <div class="row">
+        <div class="col-md-3">
+          <a href="vanilla-js/index.html" class="btn btn-secondary btn-lg btn-block">Vanilla</a>
+          <p class="small text-xs-center invisible">john cena</p>
+        </div>
+        <div class="col-md-3">
+          <a href="#" class="btn btn-secondary btn-lg btn-block">jQuery</a>
+          <p class="small text-xs-center">coming soon!</p>
+        </div>
+        <div class="col-md-3">
+          <a href="#" class="btn btn-secondary btn-lg btn-block">Backbone</a>
+          <p class="small text-xs-center">coming soon!</p>
+        </div>
+        <div class="col-md-3">
+          <a href="#" class="btn btn-secondary btn-lg btn-block">React</a>
+          <p class="small text-xs-center">coming soon!</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <p class="text-xs-center">
+            <a href="https://github.com/caracalla/third-impact-client"><kbd>View on GitHub</kbd></a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+
+    <script>
+      var buttonColors = ["primary", "success", "warning", "danger", "info"];
+      var buttons = document.getElementsByClassName("btn-lg");
+
+      var randomElement = function (array) {
+        return array[Math.floor(Math.random() * array.length)];
+      };
+
+      var fillButton = function (e) {
+        buttonColor = "btn-" + randomElement(buttonColors);
+        e.target.classList.remove("btn-secondary");
+        e.target.classList.add(buttonColor);
+      };
+
+      var emptyButton = function (e) {
+        buttonColors.forEach(function (buttonColor) {
+          e.target.classList.remove("btn-" + buttonColor);
+        });
+
+        e.target.classList.add("btn-secondary");
+      };
+
+      Array.prototype.slice.call(buttons).forEach(function (button) {
+        button.onmouseenter = fillButton;
+        button.onmouseleave = emptyButton;
+      });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+  </body>
+</html>
