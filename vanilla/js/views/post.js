@@ -26,23 +26,37 @@
 
     var postHTML =
       '<div class="row post">'
-    +   '<div class="col-lg-8 offset-lg-2 card card-block">'
-    +     '<h4 class="card-title">'
-    +       '<a href="#" class="post-link" data-postid="' + post.id + '">'
-    +          post.title
-    +       '</a>'
-    +        deleteButton
-    +     '</h4>'
-    +     '<p class="card-text small">'
-    +       "Author: "
-    +       '<a href="#" class="user-link" data-userid="' + post.author_id + '">'
-    +          post.author_username
-    +       '</a>'
-    +       ' - Posted at: ' + post.created_at
-    +     '</p>'
-    +     '<p class="card-text">'
-    +       post.content
-    +     '</p>'
+    +   '<div class="col-lg-10 offset-lg-1">'
+    +     '<div class="card">'
+    +       '<h4 class="card-header">'
+    +         '<a href="#" class="post-link" data-postid="' + post.id + '">'
+    +            post.title
+    +         '</a>'
+    +          deleteButton
+    +       '</h4>'
+    +       '<div class=" card-block">'
+    +         '<p class="card-text">'
+    +            post.content
+    +         '</p>'
+    +       '</div>'
+    +       '<div class="card-footer text-muted">'
+    +         '<div class="row">'
+    +           '<div class="col-sm-6">'
+    +             '<p class="card-text small">'
+    +               '<a href="#" class="user-link" data-userid="' + post.author_id + '">'
+    +                  post.author_username
+    +               '</a> - ' + post.created_at
+    +             '</p>'
+    +           '</div>'
+    +           '<div class="col-sm-6">'
+    +             '<div class="text-sm-right">'
+    +               '<a href="#" class="tag tag-primary post-edit-button" data-postid="' + post.id + '">edit</a>\n'
+    +               '<a href="#" class="tag tag-primary post-comment-button" data-postid="' + post.id + '">add comment</a>'
+    +             '</div>'
+    +           '</div>'
+    +         '</div>'
+    +       '</div>'
+    +     '</div>'
     +   '</div>'
     + '</div>';
 
@@ -51,18 +65,22 @@
 
   views.post.form = function () {
     var postFormHTML =
-      '<div class="row">'
-    +   '<div class="col-lg-8 offset-lg-2 card card-block">'
-    +    '<h4 class="card-title text-xs-center">New Post</h4>'
-    +    '<form>'
-    +      '<div class="form-group">'
-    +        '<input type="text" class="form-control" id="title-field" placeholder="Title">'
-    +      '</div>'
-    +      '<div class="form-group">'
-    +        '<textarea class="form-control" id="content-field" rows="3" placeholder="Content"></textarea>'
-    +      '</div>'
-    +      '<button type="submit" class="btn btn-primary" id="submit-post-button">Submit</button>'
-    +    '</form>'
+      '<div class="row post-form">'
+    +   '<div class="col-lg-10 offset-lg-1">'
+    +     '<div class="card">'
+    +       '<h4 class="card-header text-xs-center">New Post</h4>'
+    +       '<div class=" card-block">'
+    +         '<form>'
+    +           '<div class="form-group">'
+    +             '<input type="text" class="form-control" id="title-field" placeholder="Title">'
+    +           '</div>'
+    +           '<div class="form-group">'
+    +             '<textarea class="form-control" id="content-field" rows="3" placeholder="Content"></textarea>'
+    +           '</div>'
+    +           '<button type="submit" class="btn btn-primary" id="submit-post-button">Submit</button>'
+    +         '</form>'
+    +       '</div>'
+    +     '</div>'
     +   '</div>'
     + '</div>';
 
@@ -72,7 +90,7 @@
   views.post.indexLoggedOut = function (posts) {
     var signUpBannerHTML =
       '<div class="row">'
-    +   '<div class="col-lg-8 offset-lg-2">'
+    +   '<div class="col-lg-10 offset-lg-1">'
     +     '<div class="btn btn-success btn-lg btn-block" id="sign-up-banner">'
     +       'Sign up to start posting!'
     +     '</div>'

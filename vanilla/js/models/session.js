@@ -61,16 +61,20 @@
   models.session.showLogIn = function () {
     mainElement.innerHTML = views.session.create();
 
+    var usernameField = document.getElementById("username-field");
     var logInButton = document.getElementById("log-in-button");
 
+    usernameField.focus();
     logInButton.onclick = models.session.create;
   };
 
   models.session.showSignUp = function () {
     mainElement.innerHTML = views.user.form();
 
+    var usernameField = document.getElementById("username-field");
     var signUpButton = document.getElementById("sign-up-button");
 
+    usernameField.focus();
     signUpButton.onclick = models.user.create;
   };
 
