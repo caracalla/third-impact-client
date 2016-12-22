@@ -26,7 +26,7 @@
     utilities.postRequest(url, body, headers, function (user) {
       // why does a 500 go here?
       models.session.logIn(user);
-      models.post.index();
+      controllers.post.index();
     });
   };
 

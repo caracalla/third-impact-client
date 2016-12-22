@@ -15,7 +15,7 @@
 
     utilities.postRequest(url, body, headers, function (user) {
       models.session.logIn(user);
-      models.post.index();
+      controllers.post.index();
     });
   };
 
@@ -39,7 +39,7 @@
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 204) {
         models.session.logOut();
-        models.post.index();
+        controllers.post.index();
       } else if (xhr.readyState === 4 && xhr.responseText) {
         utilities.renderErrors(xhr.responseText);
       }
@@ -88,8 +88,8 @@
     var usernameLink = document.getElementById("username-link");
     var logOutLink = document.getElementById("log-out-link");
 
-    brandLink.onclick = models.post.index;
-    homeLink.onclick = models.post.index;
+    brandLink.onclick = controllers.post.index;
+    homeLink.onclick = controllers.post.index;
     usersLink.onclick = models.user.index;
 
     usernameLink.onclick = function (event) {
@@ -111,8 +111,8 @@
     var logInLink = document.getElementById("log-in-link");
     var signUpLink = document.getElementById("sign-up-link");
 
-    brandLink.onclick = models.post.index;
-    homeLink.onclick = models.post.index;
+    brandLink.onclick = controllers.post.index;
+    homeLink.onclick = controllers.post.index;
     logInLink.onclick = models.session.showLogIn;
     signUpLink.onclick = models.session.showSignUp;
   };

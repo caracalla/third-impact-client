@@ -4,5 +4,5 @@
   window.baseURL = "http://api.caracal.la/";
   window.mainElement = document.getElementById("main");
 
-  window.addEventListener("load", models.post.index);
+  window.addEventListener("load", controllers.post.index);
 })(window, window.document);

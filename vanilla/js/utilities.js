@@ -155,9 +155,40 @@
 
   utilities.makeLinkHandlers = function () {
     models.user.makeUserLinkHandlers();
-    models.post.makePostLinkHandlers();
-    models.post.makePostEditButtonHandlers();
-    models.post.makeAddCommentButtonHandlers();
-    models.post.makePostDeleteButtonHandlers();
+    controllers.post.makePostLinkHandlers();
+    controllers.post.makePostEditButtonHandlers();
+    controllers.post.makeAddCommentButtonHandlers();
+    controllers.post.makePostDeleteButtonHandlers();
+  };
+
+  utilities.getRequest2 = function (url, successCallback) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.open("get", url);
+
+    // Always authenticate requests for logged in users, even if not necessary.  This way,
+    // we can log out users with invalid credentials as quickly as possible.
+    if (utilities.isLoggedIn()) {
+      xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
+      xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
+    }
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          document.getElementById("errors").innerHTML = "";
+          successCallback(JSON.parse(xhr.responseText));
+          if (utilities.isLoggedIn()) {
+            models.session.showLoggedInState();
+          } else {
+            models.session.showLoggedOutState();
+          }
+        } else {
+          utilities.handleFailedRequest(xhr);
+        }
+      }
+    };
+
+    xhr.send(null);
   };
 })(window, window.document);
