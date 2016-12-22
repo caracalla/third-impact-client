@@ -12,15 +12,13 @@
         element.innerHTML = views.post.indexLoggedIn(posts);
         var submitPostButton = document.getElementById("submit-post-button");
         submitPostButton.onclick = models.post.create;
-
-        models.post.makePostDeleteButtonHandlers();
       } else {
         element.innerHTML = views.post.indexLoggedOut(posts);
         var signUpBanner = document.getElementById("sign-up-banner");
         signUpBanner.onclick = models.session.showSignUp;
       }
 
-      models.user.makeUserLinkHandlers();
+      utilities.makeLinkHandlers();
     });
   };
 
@@ -54,8 +52,19 @@
       //   signUpBanner.onclick = models.session.showSignUp;
       // }
 
-      models.user.makeUserLinkHandlers();
+      utilities.makeLinkHandlers();
     });
+  };
+
+  models.post.edit = function (postid) {
+    var postElement = document.getElementById("post-" + postid);
+    var post = {
+      id: postid,
+      title: postElement.getElementsByClassName("post-title")[0].innerHTML,
+      content: postElement.getElementsByClassName("post-content")[0].innerHTML
+    };
+
+    postElement.innerHTML = views.post.edit(post);
   };
 
   models.post.destroy = function (postid) {
@@ -64,6 +73,36 @@
     utilities.deleteRequest(destroyPostURL, function () {
       utilities.flash("Post deleted");
       models.post.index();
+    });
+  };
+
+  models.post.makePostLinkHandlers = function () {
+    var postLinks = utilities.makeArray(document.getElementsByClassName("post-link"));
+
+    postLinks.forEach(function (postLink) {
+      postLink.onclick = function () {
+        models.post.show(postLink.dataset.postid);
+      };
+    });
+  };
+
+  models.post.makePostEditButtonHandlers = function () {
+    var postEditButtons = utilities.makeArray(document.getElementsByClassName("post-edit-button"));
+
+    postEditButtons.forEach(function (postEditButton) {
+      postEditButton.onclick = function () {
+        models.post.edit(postEditButton.dataset.postid);
+      };
+    });
+  };
+
+  models.post.makeAddCommentButtonHandlers = function () {
+    var addCommentButtons = utilities.makeArray(document.getElementsByClassName("add-comment-button"));
+
+    addCommentButtons.forEach(function (addCommentButton) {
+      addCommentButton.onclick = function () {
+        models.post.show(addCommentButton.dataset.postid);
+      };
     });
   };
 

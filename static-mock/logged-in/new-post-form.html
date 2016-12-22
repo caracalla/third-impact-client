@@ -18,47 +18,29 @@
 
 
 
-<!-- begin own-post -->
+<!-- begin new-post-form -->
 
-        <div id="post-3" class="row post">
+        <div class="row new-post-form">
           <div class="col-lg-8 offset-lg-2">
             <div class="card">
-              <h4 class="card-header">
-                <a href="#" class="post-link" data-postid="">
-                  Third Post Title
-                </a>
-                <button type="button" class="close post-delete-button" data-postid="post.id">
-                  <span>&times;</span>
-                </button>
-              </h4>
+              <h4 class="card-header text-xs-center">New Post</h4>
 
               <div class=" card-block">
-                <p class="card-text">
-                  This post also has a delete button and an edit button because it was posted by the current user.
-                </p>
-              </div>
-
-              <div class="card-footer text-muted">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <p class="card-text small">
-                      <a href="user-show.html" class="user-link" data-userid="post.author_id">jabbascript</a> - post.created_at
-                    </p>
+                <form>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="title-field" placeholder="Title">
                   </div>
-
-                  <div class="col-sm-6">
-                    <div class="text-sm-right">
-                      <a href="#" class="tag tag-primary post-edit-button" data-userid="post.id">edit</a>
-                      <a href="#" class="tag tag-primary post-comment-button" data-userid="post.id">add comment</a>
-                    </div>
+                  <div class="form-group">
+                    <textarea class="form-control" id="content-field" rows="3" placeholder="Content"></textarea>
                   </div>
-                </div>
+                  <button type="submit" class="btn btn-primary" id="submit-post-button">Submit</button>
+                </form>
               </div>
             </div>
           </div>
         </div>
 
-<!-- end own-post -->
+<!-- end new-post-form -->
 
 
 

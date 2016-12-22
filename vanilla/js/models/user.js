@@ -8,7 +8,7 @@
     var usersURL = baseURL + "users";
 
     utilities.getRequest(usersURL, mainElement, function(users, element) {
-      element.innerHTML = views.user.index(users)
+      element.innerHTML = views.user.index(users);
       models.user.makeUserLinkHandlers();
     });
   };

@@ -152,4 +152,12 @@
     // convert HTMLCollection object to Array
     return Array.prototype.slice.call(HTMLCollectionObject);
   };
+
+  utilities.makeLinkHandlers = function () {
+    models.user.makeUserLinkHandlers();
+    models.post.makePostLinkHandlers();
+    models.post.makePostEditButtonHandlers();
+    models.post.makeAddCommentButtonHandlers();
+    models.post.makePostDeleteButtonHandlers();
+  };
 })(window, window.document);
