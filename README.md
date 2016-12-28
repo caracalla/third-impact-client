@@ -13,6 +13,14 @@ Publicly viewable at http://caracal.ca
 
 The [API][api-repo] is running on [Heroku][heroku-api], and someday at [api.caracal.la][final-api]
 
+TODOs:
+* Maintain location and history
+* Implement a more secure session/authentication solution.  Currently, plain tokens are stored in the database on the server side and in localstorage on the client side.
+  * Redis session store?
+  * JSON web tokens?
+* Set up non-Heroku server
+* Set up SSL
+
 [api-repo]: https://github.com/caracalla/third-impact-api
 [heroku-api]: https://infinite-mesa-56815.herokuapp.com/
 [final-api]: https://api.caracal.la/
