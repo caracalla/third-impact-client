@@ -26,7 +26,7 @@
     var post = {
       title: document.getElementById("title-field").value,
       content: document.getElementById("content-field").value
-    }
+    };
 
     models.post.create(post, function (post) {
       controllers.post.index();
@@ -41,19 +41,27 @@
   };
 
   controllers.post.showEdit = function (postid) {
-    var postElement = document.getElementById("post-" + postid);
-    var post = {
-      id: postid,
-      title: postElement.getElementsByClassName("post-title")[0].innerHTML,
-      content: postElement.getElementsByClassName("post-content")[0].innerHTML
-    };
+    models.post.read(postid, function (post, element) {
+      mainElement.innerHTML = views.post.edit(post);
+      utilities.makeLinkHandlers();
 
-    postElement.innerHTML = views.post.edit(post);
+      var submitPostButton = document.getElementById("submit-post-button");
+      submitPostButton.onclick = controllers.post.edit;
+    });
   };
 
   controllers.post.edit = function () {
+    var post = {
+      id: document.getElementById("id-field").value,
+      title: document.getElementById("title-field").value,
+      content: document.getElementById("content-field").value
+    };
 
-  }
+    models.post.update(post, function () {
+      utilities.flash("Post updated");
+      controllers.post.show(post.id);
+    });
+  };
 
   controllers.post.destroy = function (postid) {
     models.post.delete(postid, function () {

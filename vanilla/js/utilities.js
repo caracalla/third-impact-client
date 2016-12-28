@@ -65,6 +65,34 @@
     xhr.send(JSON.stringify(body));
   };
 
+  utilities.putRequest = function (url, body, headers, successCallback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("put", url)
+
+    Object.keys(headers).forEach(function (field) {
+      xhr.setRequestHeader(field, headers[field]);
+    });
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          document.getElementById("errors").innerHTML = "";
+          successCallback(JSON.parse(xhr.responseText));
+
+          if (utilities.isLoggedIn()) {
+            models.session.showLoggedInState();
+          } else {
+            models.session.showLoggedOutState();
+          }
+        } else {
+          utilities.handleFailedRequest(xhr);
+        }
+      }
+    }
+
+    xhr.send(JSON.stringify(body));
+  };
+
   utilities.deleteRequest = function (url, successCallback) {
     var xhr = new XMLHttpRequest();
     xhr.open("delete", url)

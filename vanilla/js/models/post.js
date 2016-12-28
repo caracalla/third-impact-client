@@ -50,7 +50,7 @@
       "X-Auth-Token": localStorage["auth-token"]
     };
 
-    utilities.postRequest(updatePostURL, body, headers, callback);
+    utilities.putRequest(updatePostURL, body, headers, callback);
   };
 
   models.post.delete = function (postid, callback) {
