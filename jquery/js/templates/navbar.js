@@ -1,0 +1,46 @@
+(function($, window, document, undefined) {
+  'use strict';
+
+  app.templates.loggedOutNavbar =
+    '<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"></button>'
+  + '<div class="collapse navbar-toggleable-xs" id="navbar-header">'
+  +   '<a href="/jquery" class="navbar-brand" id="brand-link">Third Impact</a>'
+  +   '<ul class="nav navbar-nav">'
+  +     '<li class="nav-item active">'
+  +       '<a href="/jquery" class="nav-link" id="home-link">Home</a>'
+  +     '</li>'
+  +     '<li class="nav-item float-sm-right">'
+  +       '<a href="/jquery/sign-up" class="nav-link" id="sign-up-link">Sign Up</a>'
+  +     '</li>'
+  +     '<li class="nav-item float-sm-right hidden-xs-down">'
+  +       '<span class="navbar-text">|</span>'
+  +     '</li>'
+  +     '<li class="nav-item float-sm-right">'
+  +       '<a href="/jquery/log-out" class="nav-link" id="log-in-link">Log In</a>'
+  +     '</li>'
+  +   '</ul>'
+  + '</div>';
+
+  app.templates.loggedInNavbar =
+    '<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"></button>'
+   + '<div class="collapse navbar-toggleable-xs" id="navbar-header">'
+   +   '<a class="navbar-brand" id="brand-link" href="/jquery">Third Impact</a>'
+   +   '<ul class="nav navbar-nav">'
+   +     '<li class="nav-item active">'
+   +       '<a href="/jquery" class="nav-link" id="home-link">Home</a>'
+   +     '</li>'
+   +     '<li class="nav-item active">'
+   +       '<a href="/jquery/users" class="nav-link" id="users-link">Users</a>'
+   +     '</li>'
+   +     '<li class="nav-item float-sm-right">'
+   +       '<a href="/jquery/log-out" class="nav-link" id="log-out-link">Log Out</a>'
+   +     '</li>'
+   +     '<li class="nav-item float-sm-right hidden-xs-down">'
+   +       '<span class="navbar-text">|</span>'
+   +     '</li>'
+   +     '<li class="nav-item float-sm-right">'
+   +       '<a href="/jquery/user/{{id}}" class="nav-link" id="username-link">{{username}}</a>'
+   +     '</li>'
+   +   '</ul>'
+   + '</div>';
+}(window.jQuery, window, document));

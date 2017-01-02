@@ -79,41 +79,27 @@
   };
 
   models.session.showLoggedInState = function () {
-    var navbar = document.getElementById("navbar");
-    navbar.innerHTML = views.loggedInNavbar(localStorage["username"]);
+    $("#navbar").html(Mustache.render(app.templates.loggedInNavbar, app.user()));
 
-    var brandLink = document.getElementById("brand-link");
-    var homeLink = document.getElementById("home-link");
-    var usersLink = document.getElementById("users-link");
-    var usernameLink = document.getElementById("username-link");
-    var logOutLink = document.getElementById("log-out-link");
+    $("#brand-link").on("click", controllers.post.index)
+    $("#home-link").on("click", controllers.post.index);
+    $("#users-link").on("click", models.user.index);
 
-    brandLink.onclick = controllers.post.index;
-    homeLink.onclick = controllers.post.index;
-    usersLink.onclick = models.user.index;
-
-    usernameLink.onclick = function (event) {
+    $("#username-link").on("click", function (event) {
       models.user.show(localStorage["user-id"])
-    };
+    });
 
-    logOutLink.onclick = function (event){
+    $("#log-out-link").on("click", function (event){
       models.session.destroy();
-    };
+    });
   };
 
   models.session.showLoggedOutState = function () {
-    var navbar = document.getElementById("navbar");
-    navbar.innerHTML = views.loggedOutNavbar();
+    $("#navbar").html(Mustache.render(app.templates.loggedOutNavbar));
 
-    var brandLink = document.getElementById("brand-link");
-    var homeLink = document.getElementById("home-link");
-    var usersLink = document.getElementById("users-link");
-    var logInLink = document.getElementById("log-in-link");
-    var signUpLink = document.getElementById("sign-up-link");
-
-    brandLink.onclick = controllers.post.index;
-    homeLink.onclick = controllers.post.index;
-    logInLink.onclick = models.session.showLogIn;
-    signUpLink.onclick = models.session.showSignUp;
+    $("#brand-link").on("click", controllers.post.index)
+    $("#home-link").on("click", controllers.post.index);
+    $("#log-in-link").on("click", models.session.showLogIn);
+    $("#sign-up-link").on("click", models.session.showSignUp);
   };
 })(window, window.document);

@@ -1,8 +1,7 @@
-(function (window, document, undefined) {
+(function($, window, document, undefined) {
   'use strict';
 
-  window.baseURL = "http://api.caracal.la/";
-  window.mainElement = document.getElementById("main");
-
-  window.addEventListener("load", controllers.post.index);
-})(window, window.document);
+  $("document").ready(function() {
+    app.init();
+  });
+}(window.jQuery, window, document));
