@@ -57,4 +57,24 @@
   +   '</div>'
   + '</div>';
 
+  app.templates.editPostForm =
+    '<div id="post-{{post.id}}" class="row post">'
+  +   '<div class="col-lg-10 offset-lg-1">'
+  +     '<div class="card">'
+  +       '<h4 class="card-header text-xs-center">Edit Post</h4>'
+  +       '<div class="card-block">'
+  +         '<form>'
+  +           '<div class="form-group">'
+  +             '<input type="text" class="form-control" id="title-field" value="{{post.title}}">'
+  +           '</div>'
+  +           '<div class="form-group">'
+  +             '<textarea class="form-control" id="content-field" rows="3">{{post.content}}</textarea>'
+  +           '</div>'
+  +           '<input type="text" class="hidden-xs-up" id="id-field" value="{{post.id}}">'
+  +           '<button type="submit" class="btn btn-primary" id="submit-post-button">Submit</button>'
+  +         '</form>'
+  +       '</div>'
+  +     '</div>'
+  +   '</div>'
+  + '</div>';
 }(window.jQuery, window, document));

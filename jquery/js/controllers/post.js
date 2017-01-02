@@ -42,7 +42,7 @@
 
   controllers.post.showEdit = function (postid) {
     models.post.read(postid, function (post, element) {
-      mainElement.innerHTML = views.post.edit(post);
+      mainElement.innerHTML = Mustache.render(app.templates.editPostForm, post);
       utilities.makeLinkHandlers();
 
       var submitPostButton = document.getElementById("submit-post-button");
