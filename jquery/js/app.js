@@ -2,42 +2,41 @@
   'use strict';
 
   window.app = {
-    apiURL: "http://api.caracal.la/",
-    mainElement: $("#main"),
-
     init: function () {
-      window.baseURL = this.apiURL;
-      window.mainElement = document.getElementById("main"); // this.mainElement;
+      this.apiURL = "http://api.caracal.la/",
+      this.mainElement = $("#main"),
       $("body").on("click", "a", this.clickLink);
       window.onpopstate = this.clickBack;
-      controllers.post.index();
+      app.router(document.location.pathname);
     },
 
-    clickLink: function(event) {
-      var tag = event.target;
-      if (tag.href && event.button == 0) {
-        // event.button - left click on a (standard, right-handed) mouse
-        if (tag.origin == document.location.origin) {
-          // It's a same-origin navigation: a link within the site.
-          var oldPath = document.location.pathname;
-          var newPath = tag.pathname;
+    navigateTo: function (path) {
+      // var oldPath = document.location.pathname;
+      app.router(path);
+      window.history.pushState(null, '', path);
+    },
 
+    clickLink: function (event) {
+      var link = event.target;
+      if (link.href && event.button == 0) {
+        // event.button - left click on a (standard, right-handed) mouse
+        if (link.origin == document.location.origin) {
+          // It's a same-origin navigation: a link within the site.
           event.preventDefault();
-          app.router(newPath);
-          window.history.pushState(null, '', newPath);
+          app.navigateTo(link.pathname);
         } else {
           $(this).attr("target", "_blank");
         }
       }
     },
 
-    clickBack: function(event) {
+    clickBack: function (event) {
       event.preventDefault();
       app.router(document.location.pathname);
     },
 
     user: function() {
-      if (utilities.isLoggedIn()) {
+      if (app.utils.isLoggedIn()) {
         return {
           id: localStorage["user-id"],
           username: localStorage["username"],
@@ -47,6 +46,9 @@
       }
     },
 
-    templates: {}
+    controllers: {},
+    models: {},
+    templates: {},
+    views: {}
   };
 }(window.jQuery, window, document));

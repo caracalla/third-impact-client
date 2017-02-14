@@ -1,44 +1,45 @@
-(function (window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
 
-  window.views = window.views || {}
-  window.views.post = window.views.post || {};
+  app.views.post = {
+    index: function (posts) {
+      if (app.utils.isLoggedIn()) {
+        var postsHTML = app.templates.post.form + app.views.post.renderList(posts);
+        app.mainElement.html(postsHTML);
 
-  views.post.show = function (post) {
-    var renderForAdminOrOwner = function (text, render) {
-      if (post.user.admin || post.user_id.toString() == app.user().id ) {
-        return render(text) + "\n";
+        $("submit-post-button").on("click", app.controllers.post.onPostSubmit);
+      } else {
+        var postsHTML = app.templates.user.signUpBanner + app.views.post.renderList(posts);
+        app.mainElement.html(postsHTML);
       }
-    };
+    },
 
-    var view = {
-      post: post,
-      edit: function () {
-        return renderForAdminOrOwner;
-      },
-      delete: function () {
-        return renderForAdminOrOwner;
-      }
+    show: function (post) {
+      app.mainElement.html(app.views.post.render(post));
+    },
+
+    render: function (post) {
+      var renderForAdminOrOwner = function (text, render) {
+        if (post.user.admin || (app.user() && post.user_id.toString() == app.user().id)) {
+          return render(text) + "\n";
+        }
+      };
+
+      var view = {
+        post: post,
+        edit: function () {
+          return renderForAdminOrOwner;
+        },
+        delete: function () {
+          return renderForAdminOrOwner;
+        }
+      };
+
+      return Mustache.render(app.templates.post.show, view);
+    },
+
+    renderList: function (posts) {
+      return posts.map(app.views.post.render).join("\n");
     }
-
-    return Mustache.render(app.templates.post, view);
   };
-
-  views.post.indexLoggedOut = function (posts) {
-    var signUpBannerHTML =
-      '<div class="row">'
-    +   '<div class="col-lg-10 offset-lg-1">'
-    +     '<div class="btn btn-success btn-lg btn-block" id="sign-up-banner">'
-    +       'Sign up to start posting!'
-    +     '</div>'
-    +     '<hr>'
-    +   '</div>'
-    + '</div>';
-
-    return signUpBannerHTML + posts.map(views.post.show).join("\n");
-  };
-
-  views.post.indexLoggedIn = function (posts) {
-    return app.templates.postForm + posts.map(views.post.show).join("\n");
-  };
-}(window, window.document));
+}(window.jQuery, window, window.document));

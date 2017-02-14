@@ -3,9 +3,9 @@
 
   app.templates.notFound = '<h1 class="display-1 text-xs-center">404</h1>';
 
-  app.templates.error = '<div class="alert alert-danger" role="alert">{{error}}</div>';
+  app.templates.error = '<div class="alert alert-danger">{{error}}</div>';
 
-  app.templates.flash = '<div class="alert alert-success" role="alert">{{message}}</div>';
+  app.templates.flash = '<div class="alert alert-success">{{message}}</div>';
 
   app.templates.spinner =
     '<div class="sk-circle">'

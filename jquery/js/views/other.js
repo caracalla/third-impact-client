@@ -1,4 +1,4 @@
-(function (window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
 
   window.views = window.views || {}
@@ -41,4 +41,4 @@
 
     return spinnerHTML;
   };
-}(window, window.document));
+}(window.jQuery, window, window.document));

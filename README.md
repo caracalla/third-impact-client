@@ -15,6 +15,7 @@ The [API][api-repo] is running on [Heroku][heroku-api], and someday at [api.cara
 
 TODOs:
 * Maintain location and history
+* Implement title handling
 * Implement a more secure session/authentication solution.  Currently, plain tokens are stored in the database on the server side and in localstorage on the client side.
   * Redis session store?
   * JSON web tokens?

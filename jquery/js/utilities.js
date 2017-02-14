@@ -1,7 +1,25 @@
-(function (window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
 
-  window.utilities = window.utilities || {};
+  app.utils = {
+    isLoggedIn: function () {
+      if (localStorage["auth-email"] &&
+          localStorage["auth-token"] &&
+          localStorage["username"] &&
+          localStorage["user-id"]) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    makeArray: function (HTMLCollectionObject) {
+      // convert HTMLCollection object to Array
+      return Array.prototype.slice.call(HTMLCollectionObject);
+    }
+  };
+
+  window.utilities = {}
 
   utilities.getRequest = function (url, element, successCallback) {
     element.innerHTML = views.spinner();
@@ -10,8 +28,8 @@
     xhr.withCredentials = true;
     xhr.open("get", url);
 
-    // Always authenticate requests for logged in users, even if not necessary.  This way,
-    // we can log out users with invalid credentials as quickly as possible.
+    // Always authenticate requests for logged in users, even if not necessary.
+    // This way, we can log out users with invalid credentials as quickly as possible.
     if (utilities.isLoggedIn()) {
       xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
       xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
@@ -28,82 +46,6 @@
           } else {
             models.session.showLoggedOutState();
           }
-        } else {
-          utilities.handleFailedRequest(xhr);
-        }
-      }
-    };
-
-    xhr.send(null);
-  };
-
-  utilities.postRequest = function (url, body, headers, successCallback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("post", url)
-
-    Object.keys(headers).forEach(function (field) {
-      xhr.setRequestHeader(field, headers[field]);
-    });
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          document.getElementById("errors").innerHTML = "";
-          successCallback(JSON.parse(xhr.responseText));
-
-          if (utilities.isLoggedIn()) {
-            models.session.showLoggedInState();
-          } else {
-            models.session.showLoggedOutState();
-          }
-        } else {
-          utilities.handleFailedRequest(xhr);
-        }
-      }
-    }
-
-    xhr.send(JSON.stringify(body));
-  };
-
-  utilities.putRequest = function (url, body, headers, successCallback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("put", url)
-
-    Object.keys(headers).forEach(function (field) {
-      xhr.setRequestHeader(field, headers[field]);
-    });
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          document.getElementById("errors").innerHTML = "";
-          successCallback(JSON.parse(xhr.responseText));
-
-          if (utilities.isLoggedIn()) {
-            models.session.showLoggedInState();
-          } else {
-            models.session.showLoggedOutState();
-          }
-        } else {
-          utilities.handleFailedRequest(xhr);
-        }
-      }
-    }
-
-    xhr.send(JSON.stringify(body));
-  };
-
-  utilities.deleteRequest = function (url, successCallback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("delete", url)
-
-    xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
-    xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 204) {
-          successCallback();
         } else {
           utilities.handleFailedRequest(xhr);
         }
@@ -163,60 +105,5 @@
         // do nothing
       }
     }, 5000);
-  }
-
-  utilities.isLoggedIn = function () {
-    if (localStorage["auth-email"] &&
-        localStorage["auth-token"] &&
-        localStorage["username"] &&
-        localStorage["user-id"]) {
-      return true;
-    } else {
-      return false;
-    }
   };
-
-  utilities.makeArray = function (HTMLCollectionObject) {
-    // convert HTMLCollection object to Array
-    return Array.prototype.slice.call(HTMLCollectionObject);
-  };
-
-  utilities.makeLinkHandlers = function () {
-    models.user.makeUserLinkHandlers();
-    controllers.post.makePostLinkHandlers();
-    controllers.post.makePostEditButtonHandlers();
-    controllers.post.makeAddCommentButtonHandlers();
-    controllers.post.makePostDeleteButtonHandlers();
-  };
-
-  utilities.getRequest2 = function (url, successCallback) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open("get", url);
-
-    // Always authenticate requests for logged in users, even if not necessary.  This way,
-    // we can log out users with invalid credentials as quickly as possible.
-    if (utilities.isLoggedIn()) {
-      xhr.setRequestHeader("X-Auth-Email", localStorage["auth-email"]);
-      xhr.setRequestHeader("X-Auth-Token", localStorage["auth-token"]);
-    }
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          document.getElementById("errors").innerHTML = "";
-          successCallback(JSON.parse(xhr.responseText));
-          if (utilities.isLoggedIn()) {
-            models.session.showLoggedInState();
-          } else {
-            models.session.showLoggedOutState();
-          }
-        } else {
-          utilities.handleFailedRequest(xhr);
-        }
-      }
-    };
-
-    xhr.send(null);
-  };
-})(window, window.document);
+})(window.jQuery, window, window.document);

@@ -1,24 +1,40 @@
-(function (window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
+
+  app.controllers.post = {
+    index: function () {
+      app.models.post.list(app.views.post.index);
+    },
+
+    getAction: function (routeElements, params) {
+      var postID = routeElements[0];
+
+      app.controllers.post.show(postID);
+    },
+
+    show: function (postID) {
+      app.models.post.read(postID, app.views.post.show);
+    },
+
+    onPostSubmit: function (event) {
+      event.preventDefault();
+
+      var post = {
+        post: {
+          title: $("#title-field").val(),
+          content: $("#content-field").value(),
+          user_id: localStorage["user-id]"]
+        }
+      };
+
+      app.models.post.create(post, function(post) {
+        // TODO: implement stuff to do here
+      });
+    }
+  };
 
   window.controllers = window.controllers || {};
   window.controllers.post = window.controllers.post || {};
-
-  controllers.post.index = function () { // Refactor?
-    models.post.list(function (posts) {
-      if (utilities.isLoggedIn()) {
-        mainElement.innerHTML = views.post.indexLoggedIn(posts);
-        var submitPostButton = document.getElementById("submit-post-button");
-        submitPostButton.onclick = controllers.post.create;
-      } else {
-        mainElement.innerHTML = views.post.indexLoggedOut(posts);
-        var signUpBanner = document.getElementById("sign-up-banner");
-        signUpBanner.onclick = models.session.showSignUp;
-      }
-
-      utilities.makeLinkHandlers();
-    });
-  };
 
   controllers.post.create = function (event) {
     event.preventDefault();
@@ -33,16 +49,9 @@
     });
   };
 
-  controllers.post.show = function (postid) {
-    models.post.read(postid, function (post, element) {
-      mainElement.innerHTML = views.post.show(post);
-      utilities.makeLinkHandlers();
-    });
-  };
-
   controllers.post.showEdit = function (postid) {
     models.post.read(postid, function (post, element) {
-      mainElement.innerHTML = Mustache.render(app.templates.editPostForm, post);
+      mainElement.innerHTML = Mustache.render(app.templates.post.editForm, post);
       utilities.makeLinkHandlers();
 
       var submitPostButton = document.getElementById("submit-post-button");
@@ -69,44 +78,4 @@
       controllers.post.index();
     });
   };
-
-  controllers.post.makePostLinkHandlers = function () {
-    var postLinks = utilities.makeArray(document.getElementsByClassName("post-link"));
-
-    postLinks.forEach(function (postLink) {
-      postLink.onclick = function () {
-        controllers.post.show(postLink.dataset.postid);
-      };
-    });
-  };
-
-  controllers.post.makePostEditButtonHandlers = function () {
-    var postEditButtons = utilities.makeArray(document.getElementsByClassName("post-edit-button"));
-
-    postEditButtons.forEach(function (postEditButton) {
-      postEditButton.onclick = function () {
-        controllers.post.showEdit(postEditButton.dataset.postid);
-      };
-    });
-  };
-
-  controllers.post.makeAddCommentButtonHandlers = function () {
-    var addCommentButtons = utilities.makeArray(document.getElementsByClassName("add-comment-button"));
-
-    addCommentButtons.forEach(function (addCommentButton) {
-      addCommentButton.onclick = function () {
-        controllers.post.show(addCommentButton.dataset.postid);
-      };
-    });
-  };
-
-  controllers.post.makePostDeleteButtonHandlers = function () {
-    var postDeleteButtons = utilities.makeArray(document.getElementsByClassName("post-delete-button"));
-
-    postDeleteButtons.forEach(function (postDeleteButton) {
-      postDeleteButton.onclick = function () {
-        controllers.post.destroy(postDeleteButton.dataset.postid);
-      };
-    });
-  };
-})(window, window.document);
+})(window.jQuery, window, window.document);
