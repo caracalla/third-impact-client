@@ -22,32 +22,30 @@
     // If it's the homepage, skip all the nonsense below
     if (route === "") {
       app.topLevelRoutes[route].call();
-      app.controllers.session.navbar();
-      return;
-    }
-
-    var routeElements = route.split("/").slice(1);
-    var firstElement = routeElements[0]
-    var lastElement = routeElements[routeElements.length - 1];
-
-    // Obtain params if any are provided
-    var params = {};
-
-    if (lastElement && lastElement.indexOf("?") !== -1) {
-      lastElements = lastElement.split("?");
-      routeElements[routeElements.length - 1] = lastElements[0]; // remove params from route elements
-      paramsStrings = lastElements[lastElements - 1].split("&");
-
-      paramsStrings.forEach(function (param) {
-        params[param[0]] = param[1];
-      });
-    }
-
-    // Call the proper function based on route, or 404
-    if (Object.keys(app.topLevelRoutes).includes(firstElement)) {
-      app.topLevelRoutes[firstElement].call(null, routeElements.slice(1), params);
     } else {
-      app.topLevelRoutes["404"].call();
+      var routeElements = route.split("/").slice(1);
+      var firstElement = routeElements[0]
+      var lastElement = routeElements[routeElements.length - 1];
+
+      // Obtain params if any are provided
+      var params = {};
+
+      if (lastElement && lastElement.indexOf("?") !== -1) {
+        lastElements = lastElement.split("?");
+        routeElements[routeElements.length - 1] = lastElements[0]; // remove params from route elements
+        paramsStrings = lastElements[lastElements - 1].split("&");
+
+        paramsStrings.forEach(function (param) {
+          params[param[0]] = param[1];
+        });
+      }
+
+      // Call the proper function based on route, or 404
+      if (Object.keys(app.topLevelRoutes).includes(firstElement)) {
+        app.topLevelRoutes[firstElement].call(null, routeElements.slice(1), params);
+      } else {
+        app.topLevelRoutes["404"].call();
+      }
     }
 
     app.controllers.session.navbar();
