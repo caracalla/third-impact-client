@@ -14,22 +14,25 @@
 
   app.router = function(route) {
     if (route.indexOf("/jquery") === 0) {
-      // remove leading jquery
+      // remove leading /jquery
       route = route.replace("/jquery", "");
-    } else if (route.indexOf("/") === 0) {
+    }
+
+    if (route.indexOf("/") === 0) {
       // remove leading slash
-      route = route.slice(0, -1);
+      route = route.slice(1);
     }
 
     // If it's the homepage, skip all the nonsense below
     if (route === "") {
       app.topLevelRoutes[route].call();
     } else {
-      var routeElements = route.split("/").slice(1);
-      var firstElement = routeElements[0]
+      var routeElements = route.split("/");
+      var firstElement = routeElements[0];
       var lastElement = routeElements[routeElements.length - 1];
 
       // Obtain params if any are provided
+      // TODO: figure out if this even works
       var params = {};
 
       if (lastElement && lastElement.indexOf("?") !== -1) {
