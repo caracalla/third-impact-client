@@ -13,9 +13,11 @@
   };
 
   app.router = function(route) {
-    console.log(route);
-
-    if (route[route.length - 1] === "/") {
+    if (route.indexOf("/jquery") === 0) {
+      // remove leading jquery
+      route = route.replace("/jquery", "");
+    } else if (route.indexOf("/") === 0) {
+      // remove leading slash
       route = route.slice(0, -1);
     }
 

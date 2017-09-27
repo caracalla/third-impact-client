@@ -25,7 +25,7 @@
     loggedIn:
       '<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"></button>'
      + '<div class="collapse navbar-toggleable-xs" id="navbar-header">'
-     +   '<a class="navbar-brand" id="brand-link" href="/">Third Impact</a>'
+     +   '<a href="/" class="navbar-brand" id="brand-link">Third Impact</a>'
      +   '<ul class="nav navbar-nav">'
      +     '<li class="nav-item active">'
      +       '<a href="/" class="nav-link" id="home-link">Home</a>'
