@@ -2,7 +2,7 @@
 
 A collection of clients for the third-impact API, a basic microblogging toy service with users, authentication, and other basic features.
 
-Publicly viewable at http://caracal.ca
+Publicly viewable at http://caracal.la
 
 ### Clients:
 
